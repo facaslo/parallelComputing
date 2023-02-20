@@ -10,7 +10,7 @@
 #include "time.h"
 
 // Defiinición de numero de hilos y el valor de N
-#define THREADS_NUMBER 4
+#define THREADS_NUMBER 14
 #define ITERATIONS 2e9
 
 // Se tiene que definir una estructura para que la funcion del hilo reciba un único argumento de este tipo
