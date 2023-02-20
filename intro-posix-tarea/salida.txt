@@ -1,0 +1,15 @@
+El valor de pi, con 2000000000 iteraciones y 1 hilos, es: 3.1415927127 
+El tiempo que se tardó en ejecutar el programa fue de 5.8527165050 segundos
+______________________________________________________________________________
+El valor de pi, con 2000000000 iteraciones y 2 hilos, es: 3.1415927127 
+El tiempo que se tardó en ejecutar el programa fue de 7.8516028150 segundos
+______________________________________________________________________________
+El valor de pi, con 2000000000 iteraciones y 4 hilos, es: 3.1415927127 
+El tiempo que se tardó en ejecutar el programa fue de 8.6071964440 segundos
+______________________________________________________________________________
+El valor de pi, con 2000000000 iteraciones y 8 hilos, es: 3.1415927127 
+El tiempo que se tardó en ejecutar el programa fue de 4.9128250660 segundos
+______________________________________________________________________________
+El valor de pi, con 2000000000 iteraciones y 16 hilos, es: 3.1415927127 
+El tiempo que se tardó en ejecutar el programa fue de 4.8233634940 segundos
+______________________________________________________________________________
