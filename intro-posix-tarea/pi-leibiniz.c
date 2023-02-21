@@ -1,5 +1,5 @@
 /*
-  Este programa calcula la suma de los primeros N numeros por medio de hilos posix. 
+  Este programa calcula el valor de pi, usando la serie de Leibniz por medio de hilos posix 
 */
 
 #include "stdlib.h"
