@@ -10,8 +10,8 @@
 #include "time.h"
 
 // Defiinición de numero de hilos y el valor de N
-#define THREADS_NUMBER 14
-#define ITERATIONS 2e9
+#define THREADS_NUMBER 4
+#define ITERATIONS 1e9
 
 // Se tiene que definir una estructura para que la funcion del hilo reciba un único argumento de este tipo
 typedef struct {
@@ -26,7 +26,10 @@ void* leibniz_series(void* arg){
   thread_data* data = (thread_data*) arg;
   for(int i=data->begin; i< data->end && i<=ITERATIONS; i++){ 
     //printf("Iteración:%i - begin:%i - end:%i\n", i, data->begin, data->end);
-    *(data->sum) += ((i%2==0)?1.0/(2*(float)i+1):-1.0/(2*(float)i+1));    
+    // *(data->sum) += ((i%2==0)?1.0/(2*(float)i+1):-1.0/(2*(float)i+1));    Más ineficiente
+    *(data->sum) += 1.0/(2*(float)i+1);
+    i++;    
+    *(data->sum) += -1.0/(2*(float)i+1);    
   }
 }
 
