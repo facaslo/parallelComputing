@@ -37,7 +37,7 @@ markers = ['o', 's', 'v', '^']
 # fig, ax= plt.subplots()
 fig, bx = plt.subplots()
 for i, executable in enumerate(executables):
-    '''
+    '''Sequential
     times = [results[executable][t]['time'] for t in threads]
     ax.plot(threads, times, marker=markers[i], color=colors[i], label=executable)
     '''
