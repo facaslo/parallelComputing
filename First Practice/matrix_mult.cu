@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 {
     int matrix_size = atoi(argv[1]);
     int block_size = atoi(argv[2]);    
-    int block_size = floor(sqrt(block_size));
+    block_size = floor(sqrt(block_size));
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
     int matrix_bytes = matrix_size * matrix_size * sizeof(double);
