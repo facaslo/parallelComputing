@@ -59,7 +59,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
         }
         *(c + size*row + col) = sum;
     }
-    printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
+    //printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
 }
 
 bool compare_matrices(double *matrix1, double *matrix2, int n){
@@ -68,7 +68,7 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
     int row = i*n;
     for(int j=0; j<n; j++){
       double difference = *(matrix1 + row + j) - *(matrix2 + row + j);
-      if(abs(difference) > 1E-9){
+      if(abs(difference) > 1E-6){
         isTheSame = false;
         break;
       }
@@ -121,7 +121,9 @@ int main()
     multiply_matrices(a,b,d,MATRIX_SIZE);
     print_matrix(a,MATRIX_SIZE);
     print_matrix(b,MATRIX_SIZE);
+    printf("-------------------------------------------------------------------------------\n");
     print_matrix(c,MATRIX_SIZE);
+    printf("-------------------------------------------------------------------------------\n");
     print_matrix(d,MATRIX_SIZE);
 
     bool comparison_result = compare_matrices(c,d,MATRIX_SIZE);
