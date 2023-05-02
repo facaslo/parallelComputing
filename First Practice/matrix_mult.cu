@@ -76,7 +76,7 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
 
 int main(int argc, char *argv[])
 {
-    int matrix_size = atoi(argv[1])
+    int matrix_size = atoi(argv[1]);
     int block_size = atoi(argv[2]);
     int threads = atoi(argv[3]);
     struct timespec start, end;
