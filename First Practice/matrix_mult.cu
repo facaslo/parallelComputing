@@ -118,10 +118,10 @@ int main()
     // Sequential result
     
     multiply_matrices(a,b,d,MATRIX_SIZE);
-    print_matrix(a,MATRIX_SIZE);
-    print_matrix(b,MATRIX_SIZE);
-    print_matrix(c,MATRIX_SIZE);
-    print_matrix(d,MATRIX_SIZE);
+    // print_matrix(a,MATRIX_SIZE);
+    // print_matrix(b,MATRIX_SIZE);
+    // print_matrix(c,MATRIX_SIZE);
+    // print_matrix(d,MATRIX_SIZE);
 
     bool comparison_result = compare_matrices(c,d,MATRIX_SIZE);
     
