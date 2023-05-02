@@ -8,7 +8,7 @@
 
 #define MATRIX_SIZE 2
 #define BLOCK_SIZE 32
-#define MAX_DOUBLE 1.7976931348623158E+308
+#define MAX_DOUBLE 1.7976931348623158E+3
 
 
 double RandomReal(double low, double high)
