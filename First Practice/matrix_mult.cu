@@ -6,9 +6,9 @@
 #include <stdbool.h>
 #include <math.h>
 
-#define MATRIX_SIZE 5
-#define BLOCKS 40
-#define THREADS 128
+#define MATRIX_SIZE 10
+#define BLOCK_SIZE 2
+#define THREADS 2
 #define MAX_DOUBLE 1.7976931348623158E+3
 
 
@@ -51,7 +51,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
 {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
-    printf("row : %d col: %d \n", row, col);
+
     if (row < size && col < size) {
         double sum = 0.0;
         for (int k = 0; k < size; k++) {
@@ -59,7 +59,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
         }
         *(c + size*row + col) = sum;
     }
-    // printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
+    printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
 }
 
 bool compare_matrices(double *matrix1, double *matrix2, int n){
@@ -104,11 +104,11 @@ int main()
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
-    // dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
-    // dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
+    dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
+    dim3 blockDim(floor(sqrt(THREADS)), floor(sqrt(THREADS)), 1);
 
     // Launch kernel
-    matrixMul<<<BLOCKS,THREADS>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
+    matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) 
       printf("Error: %s\n", cudaGetErrorString(err));
