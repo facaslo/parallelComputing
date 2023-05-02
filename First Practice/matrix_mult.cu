@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     cudaFree(dev_b);
     cudaFree(dev_c);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/10E-6;
+    elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/10E6;
     int number_of_blocks = grid_dimensions*grid_dimensions;
     printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.10f S", matrix_size , threads_per_block , number_of_blocks ,  elapsed_time);
     return 0;
