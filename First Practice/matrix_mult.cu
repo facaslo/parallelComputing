@@ -51,7 +51,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
 {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
-
+    printf("row : %d col: %d \n", row, col);
     if (row < size && col < size) {
         double sum = 0.0;
         for (int k = 0; k < size; k++) {
