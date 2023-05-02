@@ -111,7 +111,8 @@ int main()
     cudaMemcpy(c, dev_c, matrix_bytes, cudaMemcpyDeviceToHost);
 
     // Sequential result
-
+    cudaGetLastError();
+    cudaDeviceSynchronize();
     multiply_matrices(a,b,d,MATRIX_SIZE);
     print_matrix(a,MATRIX_SIZE);
     print_matrix(b,MATRIX_SIZE);
