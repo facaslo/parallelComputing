@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
-    int grid_dimensions = ceil((float)matrix_size / block_size);
     int block_dimension = ceil(sqrt((float)threads_per_block));
+    int grid_dimensions = ceil((float)matrix_size / block_dimension);    
     dim3 gridDim(grid_dimensions,grid_dimensions, 1);
     dim3 blockDim(block_dimension, block_dimension, 1);
 
