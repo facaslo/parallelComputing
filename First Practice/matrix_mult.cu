@@ -8,7 +8,7 @@
 
 #define MATRIX_SIZE 2
 #define BLOCK_SIZE 32
-#define MAX_DOUBLE 1.7976931348623158E+3
+#define MAX_DOUBLE 1.7976931348623158E+308
 
 
 double RandomReal(double low, double high)
@@ -58,6 +58,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
         }
         c[row * size + col] = sum;
     }
+    printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
 }
 
 bool compare_matrices(double *matrix1, double *matrix2, int n){
@@ -88,6 +89,7 @@ int main()
     c = (double*)malloc(matrix_bytes);
     d = (double*)malloc(matrix_bytes);
     // Initialize matrices with random doubles
+    srand(time(NULL));
     fill_matrix(a,MATRIX_SIZE);
     fill_matrix(b,MATRIX_SIZE);
 
