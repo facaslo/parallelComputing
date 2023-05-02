@@ -103,7 +103,7 @@ int main()
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
-    dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
+    dim3 gridDim(MATRIX_SIZE / BLOCK_SIZE, MATRIX_SIZE / BLOCK_SIZE, 1);
     dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
 
     // Launch kernel
