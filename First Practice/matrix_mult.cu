@@ -7,7 +7,7 @@
 #include <math.h>
 
 #define MATRIX_SIZE 2
-#define BLOCK_SIZE 1024
+#define BLOCK_SIZE 32
 #define MAX_DOUBLE 1.7976931348623158E+3
 
 
@@ -103,7 +103,7 @@ int main()
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
-    dim3 gridDim((MATRIX_SIZE - 1) / BLOCK_SIZE + 1, (MATRIX_SIZE - 1) / BLOCK_SIZE + 1, 1);
+    dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
     dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
 
     // Launch kernel
