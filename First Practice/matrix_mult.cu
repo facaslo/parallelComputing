@@ -77,8 +77,8 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
 int main(int argc, char *argv[])
 {
     int matrix_size = atoi(argv[1]);
-    int block_size = atoi(argv[2]);
-    int threads = atoi(argv[3]);
+    int block_size = atoi(argv[2]);    
+    int block_size = floor(sqrt(block_size));
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
     int matrix_bytes = matrix_size * matrix_size * sizeof(double);
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
     // Define grid and block dimensions
     dim3 gridDim(ceil((float)matrix_size / block_size), ceil((float)matrix_size / block_size), 1);
-    dim3 blockDim(floor(threads), floor(threads), 1);
+    dim3 blockDim(block_size, block_size, 1);
 
     // Launch kernel
     struct timespec start, end;
@@ -140,6 +140,6 @@ int main(int argc, char *argv[])
     cudaFree(dev_c);
     clock_gettime(CLOCK_MONOTONIC, &end);
     elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-    printf("Matrix-size:%d Block size:%d - threads per block:%d - Time:%.3f", matrix_size , block_size, threads , elapsed_time);
+    printf("Matrix-size:%d Block size:%d - threads per block:%d - Time:%.3f", matrix_size , block_size elapsed_time);
     return 0;
 }
