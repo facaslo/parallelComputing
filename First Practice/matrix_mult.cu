@@ -1,6 +1,10 @@
+#include <cuda_runtime.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cuda_runtime.h>
+#include <time.h>
+#include <omp.h>
+#include <stdbool.h>
+#include <math.h>
 
 #define MATRIX_SIZE 1024
 #define BLOCK_SIZE 32
@@ -110,7 +114,7 @@ int main()
 
     multiply_matrices(a,b,d,MATRIX_SIZE);
 
-    comparison_result = compare_matrices(c,d,MATRIX_SIZE);
+    bool comparison_result = compare_matrices(c,d,MATRIX_SIZE);
     
     // Free memory
     free(a);
