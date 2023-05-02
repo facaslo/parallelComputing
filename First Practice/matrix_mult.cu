@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
     int matrix_size = atoi(argv[1]);
     int block_size = atoi(argv[2]);
     int threads = atoi(argv[3]);
-    struct timespec start, end;
-    double elapsed_time;
-    clock_gettime(CLOCK_MONOTONIC, &start);
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
     int matrix_bytes = matrix_size * matrix_size * sizeof(double);
@@ -110,6 +107,9 @@ int main(int argc, char *argv[])
     dim3 blockDim(floor(threads), floor(threads), 1);
 
     // Launch kernel
+    struct timespec start, end;
+    double elapsed_time;
+    clock_gettime(CLOCK_MONOTONIC, &start);
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 
     // Sequential result
     
-    multiply_matrices(a,b,d,matrix_size);
+    // multiply_matrices(a,b,d,matrix_size);
     // print_matrix(a,matrix_size);
     // print_matrix(b,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
