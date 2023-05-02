@@ -108,7 +108,9 @@ int main()
 
     // Launch kernel
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
-    cudaGetLastError();
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess) 
+      printf("Error: %s\n", cudaGetErrorString(err));
     cudaDeviceSynchronize();
     // Copy result back to host
     cudaMemcpy(c, dev_c, matrix_bytes, cudaMemcpyDeviceToHost);
