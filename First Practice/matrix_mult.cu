@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
     // Define grid and block dimensions
     dim3 gridDim(ceil((float)matrix_size / block_size), ceil((float)matrix_size / block_size), 1);
-    dim3 blockDim(threads, threads, 1);
+    dim3 blockDim(floor(threads), floor(threads), 1);
 
     // Launch kernel
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
