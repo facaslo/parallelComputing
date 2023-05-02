@@ -49,7 +49,7 @@ void multiply_matrices_Parallel(double *matrix1, double *matrix2, double *result
         for (int j = 0; j < n; j++) {
             double sum = 0;
             for (int k = 0; k < n; k++) {
-                sum += *(matrix1 + i*n + k) * *(matrix2 + k * n + j);
+                sum += *(matrix1 + i*n  + k) * *(matrix2 + k * n + j);
             }
             *(result + i*n + j) = sum;
         }
