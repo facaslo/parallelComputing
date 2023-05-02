@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
     // Sequential result
     
-    multiply_matrices(a,b,d,matrix_size);
+    // multiply_matrices(a,b,d,matrix_size);
     // print_matrix(a,matrix_size);
     // print_matrix(b,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
@@ -129,8 +129,8 @@ int main(int argc, char *argv[])
     // printf("-------------------------------------------------------------------------------\n");
     // print_matrix(d,matrix_size);
 
-    bool comparison_result = compare_matrices(c,d,matrix_size);
-    printf("Are matrices the same: %s", comparison_result==true?"verdadero":"falso");
+    //bool comparison_result = compare_matrices(c,d,matrix_size);
+    //printf("Are matrices the same: %s \n", comparison_result==true?"verdadero":"falso");
     
     // Free memory
     free(a);
@@ -141,8 +141,8 @@ int main(int argc, char *argv[])
     cudaFree(dev_b);
     cudaFree(dev_c);
     clock_gettime(CLOCK_MONOTONIC, &end);
-    elapsed_time =  (end.tv_sec - start.tv_sec)*10E3 + (end.tv_nsec - start.tv_nsec)*10E-6;
+    elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/10E-6;
     int number_of_blocks = grid_dimensions*grid_dimensions;
-    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.3f nS", matrix_size , threads_per_block , number_of_blocks ,  elapsed_time);
+    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f S", matrix_size , threads_per_block , number_of_blocks ,  elapsed_time);
     return 0;
 }
