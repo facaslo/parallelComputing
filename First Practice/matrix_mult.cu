@@ -6,11 +6,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-#define MATRIX_SIZE 4
-#define BLOCK_SIZE 8
-#define THREADS 8
 #define MAX_DOUBLE 1.7976931348623158E+3
-
 
 double RandomReal(double low, double high)
 {
@@ -78,11 +74,17 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
 }
 
 
-int main()
+int main(int argc, char *argv[])
 {
+    int matrix_size = atoi(argv[1])
+    int block_size = atoi(argv[2]);
+    int threads = atoi(argv[3]);
+    struct timespec start, end;
+    double elapsed_time;
+    clock_gettime(CLOCK_MONOTONIC, &start);
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
-    int matrix_bytes = MATRIX_SIZE * MATRIX_SIZE * sizeof(double);
+    int matrix_bytes = matrix_size * matrix_size * sizeof(double);
 
     // Allocate host memory
     a = (double*)malloc(matrix_bytes);
@@ -91,8 +93,8 @@ int main()
     d = (double*)malloc(matrix_bytes);
     // Initialize matrices with random doubles
     srand(time(NULL));
-    fill_matrix(a,MATRIX_SIZE);
-    fill_matrix(b,MATRIX_SIZE);
+    fill_matrix(a,matrix_size);
+    fill_matrix(b,matrix_size);
 
     // Allocate device memory
     cudaMalloc((void**)&dev_a, matrix_bytes);
@@ -104,11 +106,11 @@ int main()
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Define grid and block dimensions
-    dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
-    dim3 blockDim(THREADS, THREADS, 1);
+    dim3 gridDim(ceil((float)matrix_size / block_size), ceil((float)matrix_size / block_size), 1);
+    dim3 blockDim(threads, threads, 1);
 
     // Launch kernel
-    matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
+    matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) 
       printf("Error: %s\n", cudaGetErrorString(err));
@@ -118,15 +120,15 @@ int main()
 
     // Sequential result
     
-    multiply_matrices(a,b,d,MATRIX_SIZE);
-    // print_matrix(a,MATRIX_SIZE);
-    // print_matrix(b,MATRIX_SIZE);
+    multiply_matrices(a,b,d,matrix_size);
+    // print_matrix(a,matrix_size);
+    // print_matrix(b,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
-    // print_matrix(c,MATRIX_SIZE);
+    // print_matrix(c,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
-    // print_matrix(d,MATRIX_SIZE);
+    // print_matrix(d,matrix_size);
 
-    bool comparison_result = compare_matrices(c,d,MATRIX_SIZE);
+    // bool comparison_result = compare_matrices(c,d,matrix_size);
     
     // Free memory
     free(a);
@@ -136,6 +138,8 @@ int main()
     cudaFree(dev_a);
     cudaFree(dev_b);
     cudaFree(dev_c);
-    printf("Matrices iguales: %s \n", comparison_result ? "true" : "false");
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+    printf("Matrix-size:%d Block size:%d - threads per block:%d - Time:%.3f", matrix_size , block_size, threads , elapsed_time);
     return 0;
 }
