@@ -59,7 +59,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
         }
         *(c + size*row + col) = sum;
     }
-    printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
+    // printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
 }
 
 bool compare_matrices(double *matrix1, double *matrix2, int n){
