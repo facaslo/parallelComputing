@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
     // print_matrix(d,matrix_size);
 
     bool comparison_result = compare_matrices(c,d,matrix_size);
-    printf("Are matrices the same: %s", comparison_result==true?"verdadero":false);
+    printf("Are matrices the same: %s", comparison_result==true?"verdadero":"falso");
     
     // Free memory
     free(a);
