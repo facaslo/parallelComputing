@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-#define MATRIX_SIZE 24
+#define MATRIX_SIZE 5
 #define BLOCKS 40
 #define THREADS 128
 #define MAX_DOUBLE 1.7976931348623158E+3
