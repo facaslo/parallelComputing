@@ -105,7 +105,7 @@ int main()
 
     // Define grid and block dimensions
     dim3 gridDim(ceil((float)MATRIX_SIZE / BLOCK_SIZE), ceil((float)MATRIX_SIZE / BLOCK_SIZE), 1);
-    dim3 blockDim(floor(sqrt(THREADS)), floor(sqrt(THREADS)), 1);
+    dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE, 1);
 
     // Launch kernel
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
