@@ -6,9 +6,9 @@
 #include <stdbool.h>
 #include <math.h>
 
-#define MATRIX_SIZE 10
-#define BLOCK_SIZE 2
-#define THREADS 2
+#define MATRIX_SIZE 1024
+#define BLOCK_SIZE 8
+#define THREADS 8
 #define MAX_DOUBLE 1.7976931348623158E+3
 
 
@@ -119,12 +119,12 @@ int main()
     // Sequential result
     
     multiply_matrices(a,b,d,MATRIX_SIZE);
-    print_matrix(a,MATRIX_SIZE);
-    print_matrix(b,MATRIX_SIZE);
-    printf("-------------------------------------------------------------------------------\n");
-    print_matrix(c,MATRIX_SIZE);
-    printf("-------------------------------------------------------------------------------\n");
-    print_matrix(d,MATRIX_SIZE);
+    // print_matrix(a,MATRIX_SIZE);
+    // print_matrix(b,MATRIX_SIZE);
+    // printf("-------------------------------------------------------------------------------\n");
+    // print_matrix(c,MATRIX_SIZE);
+    // printf("-------------------------------------------------------------------------------\n");
+    // print_matrix(d,MATRIX_SIZE);
 
     bool comparison_result = compare_matrices(c,d,MATRIX_SIZE);
     
