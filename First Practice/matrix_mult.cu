@@ -54,9 +54,9 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
     if (row < size && col < size) {
         double sum = 0.0;
         for (int k = 0; k < size; k++) {
-            sum += a[row * size + k] * b[k * size + col];
+            sum += *(a+ row*size + k) * *(b + size*k + col)            
         }
-        c[row * size + col] = sum;
+        *(c + size*row + col) = sum;
     }
     printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
 }
