@@ -52,7 +52,7 @@ __global__ void matrixMul(double *a, double *b, double *c, int size)
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (row < size && col < size) {
-        double sum = 0.0f;
+        double sum = 0.0;
         for (int k = 0; k < size; k++) {
             sum += a[row * size + k] * b[k * size + col];
         }
@@ -106,13 +106,13 @@ int main()
 
     // Launch kernel
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, MATRIX_SIZE);
-
+    cudaGetLastError();
+    cudaDeviceSynchronize();
     // Copy result back to host
     cudaMemcpy(c, dev_c, matrix_bytes, cudaMemcpyDeviceToHost);
 
     // Sequential result
-    cudaGetLastError();
-    cudaDeviceSynchronize();
+    
     multiply_matrices(a,b,d,MATRIX_SIZE);
     print_matrix(a,MATRIX_SIZE);
     print_matrix(b,MATRIX_SIZE);
@@ -125,6 +125,7 @@ int main()
     free(a);
     free(b);
     free(c);
+    free(d);
     cudaFree(dev_a);
     cudaFree(dev_b);
     cudaFree(dev_c);
