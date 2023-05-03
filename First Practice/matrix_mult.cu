@@ -108,10 +108,12 @@ int main(int argc, char *argv[])
     dim3 blockDim(block_dimension, block_dimension, 1);
 
     // Launch kernel
-    struct timespec start, end;
-    double elapsed_time;
-    clock_gettime(CLOCK_MONOTONIC, &start);
+    //struct timespec start, end;
+    //double elapsed_time;
+    //clock_gettime(CLOCK_MONOTONIC, &start);
+    cudaEventRecord(start);
     matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
+    cudaEventRecord(stop);
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) 
       printf("Error: %s\n", cudaGetErrorString(err));
@@ -140,9 +142,12 @@ int main(int argc, char *argv[])
     cudaFree(dev_a);
     cudaFree(dev_b);
     cudaFree(dev_c);
-    clock_gettime(CLOCK_MONOTONIC, &end);
-    elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/10E6;
+    //clock_gettime(CLOCK_MONOTONIC, &end);
+    //elapsed_time =  (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/10E6;
     int number_of_blocks = grid_dimensions*grid_dimensions;
-    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f S", matrix_size , threads_per_block , number_of_blocks ,  elapsed_time);
+    cudaEventSynchronize(stop);
+    float milliseconds = 0;
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f S", matrix_size , threads_per_block , number_of_blocks ,  milliseconds);
     return 0;
 }
