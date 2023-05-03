@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
-    
+
     int matrix_size = atoi(argv[1]);
     int threads_per_block = atoi(argv[2]);        
     double *a, *b, *c, *d;
@@ -152,6 +152,6 @@ int main(int argc, char *argv[])
     cudaEventSynchronize(stop);
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
-    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f S", matrix_size , threads_per_block , number_of_blocks ,  milliseconds);
+    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , threads_per_block , number_of_blocks ,  milliseconds);
     return 0;
 }
