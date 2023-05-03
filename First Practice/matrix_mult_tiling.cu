@@ -43,19 +43,30 @@ void multiply_matrices(double *matrix1, double *matrix2, double *result, int n) 
     }
 }
 
-__global__ void matrixMul(double *a, double *b, double *c, int size)
-{
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-
-    if (row < size && col < size) {
-        double sum = 0.0;
-        for (int k = 0; k < size; k++) {
-            sum += *(a+ row*size + k) * *(b + size*k + col);            
-        }
-        *(c + size*row + col) = sum;
+__global__ void MatrixMulKernel(double* d_M, double* d_N, double* d_P, int Width) {
+  __shared__ double Mds[TILE_WIDTH][TILE_WIDTH];
+  __shared__ double Nds[TILE_WIDTH][TILE_WIDTH];
+  int bx = blockIdx.x; int by = blockIdx.y;
+  int tx = threadIdx.x; int ty = threadIdx.y;
+  // Identify the row and column of the d_P element to work on
+  int Row = by * TILE_WIDTH + ty;
+  int Col = bx * TILE_WIDTH + tx;
+  double Pvalue = 0;
+  // Loop over the d_M and d_N tiles required to compute d_P element
+  for (int m = 0; m < Width/TILE_WIDTH; ++m) {
+    // Coolaborative loading of d_M and d_N tiles into shared memory
+    Mds[ty][tx] = *(d_M + Row*Width + m*TILE_WIDTH + tx);
+    Nds[ty][tx] = *(d_N + (m*TILE_WIDTH + ty)*Width + Col);
+    // Mds[ty][tx] = d_M[Row*Width + m*TILE_WIDTH + tx];
+    // Nds[ty][tx] = d_N[(m*TILE_WIDTH + ty)*Width + Col];
+    __syncthreads();
+    for (int k = 0; k < TILE_WIDTH; ++k) {
+      Pvalue += Mds[ty][k] * Nds[k][tx];
     }
-    //printf("Block id x : %d , Block id y : %d",blockIdx.x, blockIdx.y);    
+    __syncthreads();
+  }
+  //d_P[Row*Width + Col] = Pvalue;
+  *(d_P + Row*Width + Col) = Pvalue;
 }
 
 bool compare_matrices(double *matrix1, double *matrix2, int n){
@@ -73,7 +84,6 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
   return isTheSame;
 }
 
-
 int main(int argc, char *argv[])
 {
     cudaEvent_t start, stop;
@@ -81,7 +91,7 @@ int main(int argc, char *argv[])
     cudaEventCreate(&stop);
 
     int matrix_size = atoi(argv[1]);
-    int threads_per_block = atoi(argv[2]);        
+    int tile_width = atoi(argv[2]);        
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
     int matrix_bytes = matrix_size * matrix_size * sizeof(double);
@@ -105,16 +115,13 @@ int main(int argc, char *argv[])
     cudaMemcpy(dev_a, a, matrix_bytes, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
-    // Define grid and block dimensions
-    int block_dimension = ceil(sqrt((float)threads_per_block));
-    int grid_dimensions = ceil((float)matrix_size / block_dimension);    
-    dim3 gridDim(grid_dimensions,grid_dimensions, 1);
-    dim3 blockDim(block_dimension, block_dimension, 1);
-
     // Launch kernel
+    dim3 grimDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
+    dim3 blockDim(tile_width,tile_width,1);
     cudaEventRecord(start);
-    matrixMul<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
+    MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
     cudaEventRecord(stop);
+    
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) 
       printf("Error: %s\n", cudaGetErrorString(err));
@@ -132,8 +139,8 @@ int main(int argc, char *argv[])
     // printf("-------------------------------------------------------------------------------\n");
     // print_matrix(d,matrix_size);
 
-    //bool comparison_result = compare_matrices(c,d,matrix_size);
-    //printf("Are matrices the same: %s \n", comparison_result==true?"verdadero":"falso");
+    bool comparison_result = compare_matrices(c,d,matrix_size);
+    printf("Are matrices the same: %s \n", comparison_result==true?"verdadero":"falso");
     
     // Free memory
     free(a);
@@ -147,7 +154,7 @@ int main(int argc, char *argv[])
     int number_of_blocks = grid_dimensions*grid_dimensions;
     
     cudaEventSynchronize(stop);
-    float milliseconds = 0;
+    double milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
     printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , threads_per_block , number_of_blocks ,  milliseconds);
     return 0;
