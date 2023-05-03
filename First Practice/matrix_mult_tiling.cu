@@ -7,6 +7,7 @@
 #include <math.h>
 
 #define MAX_DOUBLE 1.7976931348623158E+3
+#define TILE_WIDTH 2;
 
 double RandomReal(double low, double high)
 {
@@ -43,24 +44,24 @@ void multiply_matrices(double *matrix1, double *matrix2, double *result, int n) 
     }
 }
 
-__global__ void MatrixMulKernel(double* d_M, double* d_N, double* d_P, int Width, int tileWidth) {
-  __shared__ double Mds[tileWidth][tileWidth];
-  __shared__ double Nds[tileWidth][tileWidth];
+__global__ void MatrixMulKernel(double* d_M, double* d_N, double* d_P, int Width) {
+  __shared__ double Mds[TILE_WIDTH][TILE_WIDTH];
+  __shared__ double Nds[TILE_WIDTH][TILE_WIDTH];
   int bx = blockIdx.x; int by = blockIdx.y;
   int tx = threadIdx.x; int ty = threadIdx.y;
   // Identify the row and column of the d_P element to work on
-  int Row = by * tileWidth + ty;
-  int Col = bx * tileWidth + tx;
+  int Row = by * TILE_WIDTH + ty;
+  int Col = bx * TILE_WIDTH + tx;
   double Pvalue = 0;
   // Loop over the d_M and d_N tiles required to compute d_P element
-  for (int m = 0; m < Width/tileWidth; ++m) {
+  for (int m = 0; m < Width/TILE_WIDTH; ++m) {
     // Coolaborative loading of d_M and d_N tiles into shared memory
-    Mds[ty][tx] = *(d_M + Row*Width + m*tileWidth + tx);
-    Nds[ty][tx] = *(d_N + (m*tileWidth + ty)*Width + Col);
+    Mds[ty][tx] = *(d_M + Row*Width + m*TILE_WIDTH + tx);
+    Nds[ty][tx] = *(d_N + (m*TILE_WIDTH + ty)*Width + Col);
     // Mds[ty][tx] = d_M[Row*Width + m*TILE_WIDTH + tx];
     // Nds[ty][tx] = d_N[(m*TILE_WIDTH + ty)*Width + Col];
     __syncthreads();
-    for (int k = 0; k < tileWidth; ++k) {
+    for (int k = 0; k < TILE_WIDTH; ++k) {
       Pvalue += Mds[ty][k] * Nds[k][tx];
     }
     __syncthreads();
@@ -119,7 +120,7 @@ int main(int argc, char *argv[])
     dim3 grimDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
     dim3 blockDim(tile_width,tile_width,1);
     cudaEventRecord(start);
-    MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size, tile_width);
+    MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
     cudaEventRecord(stop);
     
     cudaError_t err = cudaGetLastError();
