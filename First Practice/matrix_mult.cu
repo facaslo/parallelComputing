@@ -76,6 +76,10 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
 
 int main(int argc, char *argv[])
 {
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    
     int matrix_size = atoi(argv[1]);
     int threads_per_block = atoi(argv[2]);        
     double *a, *b, *c, *d;
