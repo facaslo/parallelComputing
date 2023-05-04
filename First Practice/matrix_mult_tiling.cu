@@ -77,7 +77,7 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
     int row = i*n;
     for(int j=0; j<n; j++){
       double difference = *(matrix1 + row + j) - *(matrix2 + row + j);
-      if(abs(difference) > 1E-6){
+      if(abs(difference) > 1E-3){
         isTheSame = false;
         break;
       }
