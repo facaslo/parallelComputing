@@ -156,8 +156,8 @@ int main(int argc, char *argv[])
     int number_of_blocks = ceil((float)matrix_size/tile_width)*ceil((float)matrix_size/tile_width);
     
     cudaEventSynchronize(stop);
-    double milliseconds = 0;
+    float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
-    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , threads_per_block , number_of_blocks ,  milliseconds);
+    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , tile_width* tile_width , number_of_blocks ,  milliseconds);
     return 0;
 }
