@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
     // Copy matrices to device
     cudaMemcpy(dev_a, a, matrix_bytes, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_c, c, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Launch kernel
     dim3 gridDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
