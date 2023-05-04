@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 
     // Sequential result
     
-    // multiply_matrices(a,b,d,matrix_size);
+    multiply_matrices(a,b,d,matrix_size);
     // print_matrix(a,matrix_size);
     // print_matrix(b,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
