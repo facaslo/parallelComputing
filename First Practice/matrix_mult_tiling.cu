@@ -7,7 +7,7 @@
 #include <math.h>
 
 #define MAX_DOUBLE 1.7976931348623158E+3
-
+#define TILE_WIDTH 2
 
 double RandomReal(double low, double high)
 {
@@ -45,7 +45,7 @@ void multiply_matrices(double *matrix1, double *matrix2, double *result, int n) 
 }
 
 __global__ void MatrixMulKernel(double* d_M, double* d_N, double* d_P, int Width) {
-  #define TILE_WIDTH 2;
+  
   __shared__ double Mds[TILE_WIDTH][TILE_WIDTH];
   __shared__ double Nds[TILE_WIDTH][TILE_WIDTH];
   int bx = blockIdx.x; int by = blockIdx.y;
