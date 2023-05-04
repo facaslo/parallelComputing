@@ -80,7 +80,7 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
       if(abs(difference) > 1E-3){
         isTheSame = false;
         printf("row:%d - col:%d - difference:%.3f \n", row,col,difference);
-        return isTheSame
+        return isTheSame;
       }
     }
   }
