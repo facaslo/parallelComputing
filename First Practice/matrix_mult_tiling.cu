@@ -7,7 +7,7 @@
 #include <math.h>
 
 #define MAX_DOUBLE 1.7976931348623158E+3
-#define TILE_WIDTH 1
+#define TILE_WIDTH 11
 
 double RandomReal(double low, double high)
 {
