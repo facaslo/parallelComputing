@@ -93,8 +93,7 @@ int main(int argc, char *argv[])
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
 
-    int matrix_size = atoi(argv[1]);
-    int tile_width = atoi(argv[2]);        
+    int matrix_size = atoi(argv[1]);         
     double *a, *b, *c, *d;
     double *dev_a, *dev_b, *dev_c;
     int matrix_bytes = matrix_size * matrix_size * sizeof(double);
