@@ -7,7 +7,7 @@
 #include <math.h>
 
 #define MAX_DOUBLE 1.7976931348623158E+3
-#define TILE_WIDTH 2
+#define TILE_WIDTH 8
 
 double RandomReal(double low, double high)
 {
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
     // Launch kernel
     dim3 gridDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
-    dim3 blockDim(tile_width,tile_width,1);
+    dim3 blockDim(TILE_WIDTH,TILE_WIDTH,1);
     cudaEventRecord(start);
     MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
     cudaEventRecord(stop);
