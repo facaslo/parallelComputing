@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
     cudaMemcpy(dev_b, b, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Launch kernel
-    dim3 grimDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
+    dim3 gridDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
     dim3 blockDim(tile_width,tile_width,1);
     cudaEventRecord(start);
     MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
