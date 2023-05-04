@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
     cudaFree(dev_b);
     cudaFree(dev_c);
     
-    int number_of_blocks = ceil((float)matrix_size/tile_width)*ceil((float)matrix_size/tile_width);
+    int number_of_blocks = ceil((float)matrix_size/TILE_WIDTH)*ceil((float)matrix_size/TILE_WIDTH);
     
     cudaEventSynchronize(stop);
     float milliseconds = 0;
