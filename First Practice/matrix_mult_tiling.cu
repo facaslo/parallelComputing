@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
     // Sequential result
     
-    multiply_matrices(a,b,d,matrix_size);
+    // multiply_matrices(a,b,d,matrix_size);
     // print_matrix(a,matrix_size);
     // print_matrix(b,matrix_size);
     // printf("-------------------------------------------------------------------------------\n");
@@ -142,8 +142,8 @@ int main(int argc, char *argv[])
     // printf("-------------------------------------------------------------------------------\n");
     // print_matrix(d,matrix_size);
 
-    bool comparison_result = compare_matrices(c,d,matrix_size);
-    printf("Are matrices the same: %s \n", comparison_result==true?"verdadero":"falso");
+    // bool comparison_result = compare_matrices(c,d,matrix_size);
+    // printf("Are matrices the same: %s \n", comparison_result==true?"verdadero":"falso");
     
     // Free memory
     free(a);
