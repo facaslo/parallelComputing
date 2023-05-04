@@ -53,7 +53,7 @@ __global__ void MatrixMulKernel(double* d_M, double* d_N, double* d_P, int Width
   // Identify the row and column of the d_P element to work on
   int Row = by * TILE_WIDTH + ty;
   int Col = bx * TILE_WIDTH + tx;
-  double Pvalue = 0;
+  double Pvalue = 0.0;
   // Loop over the d_M and d_N tiles required to compute d_P element
   for (int m = 0; m < Width/TILE_WIDTH; ++m) {
     // Coolaborative loading of d_M and d_N tiles into shared memory
