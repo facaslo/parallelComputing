@@ -79,8 +79,8 @@ bool compare_matrices(double *matrix1, double *matrix2, int n){
       double difference = *(matrix1 + row + j) - *(matrix2 + row + j);
       if(abs(difference) > 1E-3){
         isTheSame = false;
-        printf("row:%d - col:%d - difference:%.3f \n", row,col,difference)
-        break;
+        printf("row:%d - col:%d - difference:%.3f \n", row,col,difference);
+        return isTheSame
       }
     }
   }
