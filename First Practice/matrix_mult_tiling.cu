@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     cudaMemcpy(dev_c, c, matrix_bytes, cudaMemcpyHostToDevice);
 
     // Launch kernel
-    dim3 gridDim(ceil((float)matrix_size/tile_width), ceil((float)matrix_size/tile_width) ,1);
+    dim3 gridDim(ceil((float)matrix_size/TILE_WIDTH), ceil((float)matrix_size/TILE_WIDTH) ,1);
     dim3 blockDim(TILE_WIDTH,TILE_WIDTH,1);
     cudaEventRecord(start);
     MatrixMulKernel<<<gridDim, blockDim>>>(dev_a, dev_b, dev_c, matrix_size);
@@ -159,6 +159,6 @@ int main(int argc, char *argv[])
     cudaEventSynchronize(stop);
     float milliseconds = 0;
     cudaEventElapsedTime(&milliseconds, start, stop);
-    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , tile_width* tile_width , number_of_blocks ,  milliseconds);
+    printf("Matrix-size:%d - threads per block :%d - Number of blocks:%d - Time:%.20f mS", matrix_size , TILE_WIDTH* TILE_WIDTH , number_of_blocks ,  milliseconds);
     return 0;
 }
